@@ -1,5 +1,4 @@
-# Python 进阶笔记
-# PythonAdvancedNoted
+# Python 进阶笔记(Python Advanced Note)
 ***
 [TOC]
 
