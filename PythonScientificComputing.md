@@ -1,5 +1,4 @@
-# Python 科学计算
-#PythonScientificComputing
+# Python 科学计算(Python Scientific Computing)
 
 ## NumPy(MatLab 替代品之一)
 
