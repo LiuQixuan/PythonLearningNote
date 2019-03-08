@@ -1,9 +1,6 @@
 # Python 进阶笔记
 ***
-[TOC]
-
-
-
+![avatar](https://github.com/LiuQixuan/PythonLearningNote/blob/master/sources/TOC.png)
 ***
 
 ## 函数式编程
