@@ -1,6 +1,6 @@
 # Python 进阶笔记
 ***
-![avatar](https://github.com/LiuQixuan/PythonLearningNote/blob/master/sources/TOC.png)
+![TOC](https://github.com/LiuQixuan/PythonLearningNote/blob/master/sources/TOC.png?raw=true)
 ***
 
 ## 函数式编程
@@ -92,16 +92,16 @@
 >- `__delitem__` 用于索引操作[num]，删除数据
 >>```python
 >> class mydict(object):
->> def __getitem__(self, key):
->> 	return self.key
->> def __setitem__(self, key, value):
->> 	self.key = value
->> def __delitem__(self, key):
->> 	del self.key
->> 	obj = mydict()
->> 	result = obj[]
->> 	obj['key'] = value
->> 	del obj['key']
+>> 	def __getitem__(self, key):
+>> 		return self.key
+>> 	def __setitem__(self, key, value):
+>> 		self.key = value
+>> 	def __delitem__(self, key):
+>> 		del self.key
+>> obj = mydict()
+>> result = obj[]
+>> obj['key'] = value
+>> del obj['key']
 >>```
 >> **实现切片操作**
 >>`__getitem__(self, n)`传入的参数n 可能是int也可能是slice
@@ -160,7 +160,7 @@
 >```python
 >def func(self):
 >	print('Hello world!')
->	object = type('Object', (object,), {'func':func})
+>object = type('Object', (object,), {'func':func})
 >#arg1:str 类名 ;arg2:tuple 基类; arg3:dict 成员;
 >```
 >***类的创建过程***
