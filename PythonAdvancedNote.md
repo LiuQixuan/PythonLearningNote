@@ -1,4 +1,4 @@
-# Python 进阶笔记(Python Advanced Note)
+# Python 进阶笔记
 ***
 [TOC]
 
@@ -29,6 +29,7 @@
 >3.静态方法(@staticmethod def func())
 
 ###属性（@property def func(self)）
+
 >1.静态字段
 >2.装饰类
 >
@@ -95,15 +96,15 @@
 >>```python
 >> class mydict(object):
 >> def __getitem__(self, key):
->> return self.key
+>> 	return self.key
 >> def __setitem__(self, key, value):
->> self.key = value
+>> 	self.key = value
 >> def __delitem__(self, key):
->> del self.key
->> obj = mydict()
->> result = obj[]
->> obj['key'] = value
->> del obj['key']
+>> 	del self.key
+>> 	obj = mydict()
+>> 	result = obj[]
+>> 	obj['key'] = value
+>> 	del obj['key']
 >>```
 >> **实现切片操作**
 >>`__getitem__(self, n)`传入的参数n 可能是int也可能是slice
@@ -161,8 +162,8 @@
 >
 >```python
 >def func(self):
->print('Hello world!')
->object = type('Object', (object,), {'func':func})
+>	print('Hello world!')
+>	object = type('Object', (object,), {'func':func})
 >#arg1:str 类名 ;arg2:tuple 基类; arg3:dict 成员;
 >```
 >***类的创建过程***
@@ -317,13 +318,13 @@
 >```python
 >
 >try:
->pass
+>	pass
 >except Exception as e:
->raise
+>	raise
 >else:
->pass
+>	pass
 >finally:
->pass
+>	pass
 >
 >```
 >
@@ -485,15 +486,15 @@
 >```python
 >class Sample:
 >def __enter__(self):
->print('function:enter')
->return "SAMPLE"
+>	print('function:enter')
+>	return "SAMPLE"
 >    def __exit__(self, type, value, trace):
 >    	print('function:exit')
 >def get_sample():
->return Sample()
+>	return Sample()
 >
 >with get_sample() as sample:
->print(f'{sample}do somethings')
+>	print(f'{sample}do somethings')
 >
 >
 >[result:]
@@ -503,10 +504,10 @@
 >
 >class Sample:
 >def __init__(self, value):
->self.num = value
+>	self.num = value
 >def __enter__(self):
->print('function:enter')
->return self
+>	print('function:enter')
+>	return self
 >    def __exit__(self, type, value, trace):
 >    	print('function:exit')
 >    	print('m_type:{type}\tm_value:{value}\ttrace:{trace})
@@ -516,9 +517,9 @@
 >return Sample(num)
 >
 >with get_sample() as sample:
->print(f'{sample}do somethings')
->num = input("input a number:")
->sample.func(num)
+>	print(f'{sample}do somethings')
+>	num = input("input a number:")
+>	sample.func(num)
 >
 >
 >#执行顺序：
