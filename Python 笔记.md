@@ -1,10 +1,10 @@
 ---
-title: Python 进阶笔记
+title: Python进阶笔记
 date: 2019-03-06 21:23:56
 tags:
-	- Python
-	- advancement
-	- notebook
+    - Python
+    - advancement
+    - notebook
 toc: true
 ---
 Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3 失去了Python的灵魂，就没管Python3 。 最近因为项目需要使用Python3，又把当年的那份热血花在了Python3的学习上。 本以为Python3只是Python2 的升级会很好上手，没想到Python3相对于Python2而言有太多的新语法、新概念。 从小养成学习记笔记的好习惯，把学习遇到的重点写下来，第一日后复习用，其次如果有其他同学看到我的笔记，并感觉有用，也是算是我劳动成果的附加收益吧
@@ -99,15 +99,15 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >>```python
 >> class mydict(object):
 >> def __getitem__(self, key):
->> 	return self.key
+>>  return self.key
 >> def __setitem__(self, key, value):
->> 	self.key = value
+>>  self.key = value
 >> def __delitem__(self, key):
->> 	del self.key
->> 	obj = mydict()
->> 	result = obj[]
->> 	obj['key'] = value
->> 	del obj['key']
+>>  del self.key
+>>  obj = mydict()
+>>  result = obj[]
+>>  obj['key'] = value
+>>  del obj['key']
 >>```
 >> **实现切片操作**
 >>`__getitem__(self, n)`传入的参数n 可能是int也可能是slice
@@ -115,18 +115,18 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >> ```python
 >> class Fib(object):
 >> def __getiter__(self, n):
->> 	if isinstance(n, int):
+>>  if isinstance(n, int):
 >>        a, b = 1, 1
 >>        for x in range(n):
 >>            a, b = b, a + b
->>     	return a
+>>      return a
 >>    if isinstanece(n, slice):
 >>        l = []
 >>        slice.start = 0 if (slice.start is None)
 >>        a, b = 1, 1
 >>        for x in range(n.stop):
->>        	if (x >= n.start and (x - n.start)%n.step == 0):
->>            	l.append(a)
+>>          if (x >= n.start and (x - n.start)%n.step == 0):
+>>              l.append(a)
 >>            a, b = b, a+b
 >>        return l
 >>        
@@ -158,15 +158,15 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >```python
 >class Object(object):
 >def func(self):
->	print('hello world!')
+>   print('hello world!')
 >object = Object()
 >```
 >2.特殊方法（元类type构造对象）
 >
 >```python
 >def func(self):
->	print('Hello world!')
->	object = type('Object', (object,), {'func':func})
+>   print('Hello world!')
+>   object = type('Object', (object,), {'func':func})
 >#arg1:str 类名 ;arg2:tuple 基类; arg3:dict 成员;
 >```
 >***类的创建过程***
@@ -197,27 +197,27 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >from enum import Enum
 >month = Enum('Mouth',('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'))
 >for name ,member in month.__members__.items():
->	print(f'{name}=>{member}=>{member.value}')
+>   print(f'{name}=>{member}=>{member.value}')
 >```
 ### 定义枚举类
 >```python
 >from enum import Enum, unique
 >@unique#unique装饰器帮助检查Enum内部字段，保证字段不重复
 >class My_weekday(Enum):
->	Sun = 0
->	Mon = 1
->	Tue = 2
->	Wed = 3
->	Thu = 4
->	Fri = 5
->	Sat = 6 
+>   Sun = 0
+>   Mon = 1
+>   Tue = 2
+>   Wed = 3
+>   Thu = 4
+>   Fri = 5
+>   Sat = 6 
 >my_weekday = My_weekday()#my_weekday.Sun
 >print(my_weekday.Sun)#my_weekday.Sun
 >print(my_weekday['Sun'])#my_weekday.Sun
 >print(my_weekday(0))#my_weekday.Sun
 >print(my_weekday.Sun.value)#0
 >for name, member in my_weekday.__members__.item():
->	print(f'{name} {member} {member.value}')
+>   print(f'{name} {member} {member.value}')
 >【output】
 >"""
 >Sun  My_weekday.Sun 0
@@ -239,10 +239,10 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >from types import MethodType
 >
 >def func(self, value):
->	self.age = value
+>   self.age = value
 >class Student(object):
->	def __init__(self,name):
->		self.name = name
+>   def __init__(self,name):
+>       self.name = name
 >student = Student('Bob')
 >student.age_setter = MethodType(age_setter,func)
 >student.age_setter(21)
@@ -251,10 +251,10 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >动态的给类添加方法
 >```python
 >def func(self, value):
->	self.age = value
+>   self.age = value
 >class Student(object):
->	def __init__(self,name):
->		self.name = name
+>   def __init__(self,name):
+>       self.name = name
 >Student.age_setter = func
 >Student.age_setter = MethodType(func, None, Student)
 >student = Student('Bob')
@@ -264,7 +264,7 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 ### 元类type构造对象
 >```python
 >def func(self):
->	print('Hello world!')
+>   print('Hello world!')
 >object = type('Object', (object,), {'func':func})
 >#arg1:str 类名 ;arg2:tuple 基类; arg3:dict('a' = a, 'b' = b...) 类变量/静态字段;
 >```
@@ -272,26 +272,26 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >slot是一个特殊静态字段,tuple类型.slot只对当前类起作用，对其子类并不起作用
 >```python
 >class Student(object):
->		__slot__ = ('name', 'age')
->		def __init__(self, name, age):
->			super(Student,self).__init__()
->			self.name = name
->			self.age = age
->		@property
->		def name(self):
->			return self.name
+>       __slot__ = ('name', 'age')
+>       def __init__(self, name, age):
+>           super(Student,self).__init__()
+>           self.name = name
+>           self.age = age
+>       @property
+>       def name(self):
+>           return self.name
 >
->		@name.setter
->		def name(self,name):
->			self.name = name
+>       @name.setter
+>       def name(self,name):
+>           self.name = name
 >
->		@property
->		def age(self):
->			return self.age
+>       @property
+>       def age(self):
+>           return self.age
 >
->		@age.setter
->		def age(self,name):
->			self.age = age
+>       @age.setter
+>       def age(self,name):
+>           self.age = age
 >s1 = Student('Bill',21)
 >s1.score = 89                [ERROR]:不能添加score字段
 >```
@@ -321,13 +321,13 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >```python
 >
 >try:
->	pass
+>   pass
 >except Exception as e:
->	raise
+>   raise
 >else:
->	pass
+>   pass
 >finally:
->	pass
+>   pass
 >
 >```
 >
@@ -392,7 +392,7 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >>```python
 >>import unittest
 >>class TestClass(unitest.TestCase):
->>	def setUp(self):
+>>  def setUp(self):
 >>        pass
 >>    def tearDown(self):
 >>        pass
@@ -489,15 +489,15 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >```python
 >class Sample:
 >def __enter__(self):
->	print('function:enter')
->	return "SAMPLE"
+>   print('function:enter')
+>   return "SAMPLE"
 >    def __exit__(self, type, value, trace):
->    	print('function:exit')
+>       print('function:exit')
 >def get_sample():
->	return Sample()
+>   return Sample()
 >
 >with get_sample() as sample:
->	print(f'{sample}do somethings')
+>   print(f'{sample}do somethings')
 >
 >
 >[result:]
@@ -507,22 +507,22 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >
 >class Sample:
 >def __init__(self, value):
->	self.num = value
+>   self.num = value
 >def __enter__(self):
->	print('function:enter')
->	return self
+>   print('function:enter')
+>   return self
 >    def __exit__(self, type, value, trace):
->    	print('function:exit')
->    	print('m_type:{type}\tm_value:{value}\ttrace:{trace})
+>       print('function:exit')
+>       print('m_type:{type}\tm_value:{value}\ttrace:{trace})
 >    def func(self, value):
->    	return self.num/value
+>       return self.num/value
 >def get_sample(num):
 >return Sample(num)
 >
 >with get_sample() as sample:
->	print(f'{sample}do somethings')
->	num = input("input a number:")
->	sample.func(num)
+>   print(f'{sample}do somethings')
+>   num = input("input a number:")
+>   sample.func(num)
 >
 >
 >#执行顺序：

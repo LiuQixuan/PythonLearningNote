@@ -2,8 +2,8 @@
 title: NumPy 降维方法深度解析
 date: 2019-03-13 12:23:56
 tags:
-	- python
-	- NumPy
+    - python
+    - NumPy
 toc: true
 ---
 
@@ -28,7 +28,7 @@ b = a.reshape(-1)
 print('reshape方法：\n',b)
 c = []
 for x in a.flat:
-	c.append(x)
+    c.append(x)
 print('flat迭代器：\n',c)
 d = a.flatten()
 print('flatten方法：\n',d)
