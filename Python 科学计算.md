@@ -6,7 +6,7 @@ tags:
     - science conputing
 toc: true
 ---
-# Python 科学计算
+# Python 科学计算--Numpy
 
 
 ## NumPy(MatLab 替代品之一)

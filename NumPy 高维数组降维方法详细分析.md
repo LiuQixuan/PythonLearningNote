@@ -89,7 +89,7 @@ shape是ndarray中的一个字段，可以直接赋值改变shape形状`a.shape 
 
 flatten 返回的是一个coper，其ndarray本身不变，修改返回值不影响原本的ndarray。
 
-reshape,类似ravel 返回的是一个原数组的一个视图本身是引用，虽然ndarray本身的维度不变，但是对降维后的数组进行操作，原数组仍然发生改变。
+reshape,类似ravel 返回的是一个原数组的一个视图,实质还是引用，虽然ndarray本身的维度不变，但是对降维后的数组进行操作，原数组仍然发生改变。
 
 `ravel()`相当于`reshape(-1)`相当于`reshape(ndarray.size())`
 
