@@ -2,7 +2,7 @@
 title: TensorFlow 安装总结
 date: 2019-3-22 12:30:24
 tags: 
-	- pythpon
+	- python
 	- TensorFlow
 	- MachineLearning
 toc:
@@ -27,16 +27,16 @@ TensorFlow-GPU是TensorFlow的GPU版，能够使用支持NVIDIA CUDA 并行计�
 
 我们打开TensorFlow的官网可以明显的在导航栏找到 Install 页面的入口。
 
-然而相信我，安装TensorFlow与那没有官方页面上写的几行命令输入后就可以去喝茶了，喝杯茶刷刷微博，那边就安装完成了。
+然而相信我，安装TensorFlow并没有官方页面上写的那么简单（特别是喜欢挑战难度安装GPU版本），输入几行代码，坐到旁边喝杯茶刷刷微博，过一会就安装完成了。
 
-因为TensorFlow支持众多平台，首先我们要搞懂TensorFlow到底有多少版本。
+因为TensorFlow支持众多平台，首先我们要搞懂TensorFlow到底支持哪些操作系统。
 
 - Ubuntu 16.04 或更高版本（这里可代表Linux家族）
 - Windows 7 或更高版本
 - macOS 10.12.6 (Sierra) 或更高版本（不支持 GPU）
 - Raspbian 9.0 或更高版本
 
-可以看出来通用的版本都是支持的。
+可以看出来常用的操作系统都是支持的。
 
 ### 安装Cuda
 

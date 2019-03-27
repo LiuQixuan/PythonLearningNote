@@ -2,7 +2,7 @@
 title: SVM原理详解
 date: 2019-3-19 17:57:14
 tags: 
-	- pythpon
+	- python
 	- MachineLearning
 toc:
 	ture
