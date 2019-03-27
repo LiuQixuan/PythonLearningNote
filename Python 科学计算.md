@@ -2,12 +2,16 @@
 title: Python科学计算
 date: 2019-03-09 21:23:56
 tags:
-    - python
-    - science conputing
+
+	- python
+	- science conputing
 toc: true
 ---
-# Python 科学计算--Numpy
+# Python 科学计算
 
+---
+[TOC]
+---
 
 ## NumPy(MatLab 替代品之一)
 
@@ -25,7 +29,6 @@ frmemeta
 ## Matplotlib（科学绘图）
 
 >Matplotlib是Numpy的数值可视化包，它利用通用的图形用户界面工具包向应用程序嵌入式绘图提供接口。
-
 
 <!--more-->
 
@@ -121,6 +124,34 @@ numpy 支持大量的数据类型，可与C语言的数据类型做参照
 | complex_ | cpmplex128简写，128bit复数 | c16 |
 | complex64 | 64bit复数 | c8 |
 | complex128 | 128bit复数 | c16 |
+
+| 符号         | 描述                                    |
+| ------------ | --------------------------------------- |
+| `'?'`        | boolean                                 |
+| `'b'`        | (signed) byte                           |
+| `'B'`        | unsigned byte                           |
+| `'i'`        | (signed) integer                        |
+| `'u'`        | unsigned integer                        |
+| `'f'`        | floating-point                          |
+| `'c'`        | complex-floating point                  |
+| `'m'`        | timedelta                               |
+| `'M'`        | datetime                                |
+| `'O'`        | (Python) objects                        |
+| `'S'`, `'a'` | zero-terminated bytes (not recommended) |
+| `'U'`        | Unicode string                          |
+| `'V'`        | raw data (`void`)                       |
+
+| Build_In     | 等价                                       |
+| ------------------------------------------------------------ | ------------------------------------------ |
+| `int` | `int_`                                     |
+| `bool` | `bool_`                                    |
+| `float` | `float_`                                   |
+| `complex` | `cfloat`                                   |
+| `bytes` | `bytes_`                                   |
+| `str` | `bytes_` (Python2) or `unicode_` (Python3) |
+| `unicode`                                                    | `unicode_`                                 |
+| `buffer`                                                     | `void`                                     |
+| (all others)                                                 | `object_`                                  |
 
 dtype 可取类型 np.bool_,np.int32,np.float_,np.complex128
 
@@ -228,7 +259,7 @@ print(a.shape) #(2, 3)
 
 ndarray.reshape
 
-注意a.shape()是自身改变而a.reshape()是返回一个数组
+注意:修改a.shape = shape或a.reshape()是返回一个视图，若返回的视图被修改，源数组也会发生改变。
 
 ```python
 import numpy as np
@@ -989,19 +1020,9 @@ for x,y in np.nditer([a,b],order = 'C'):
 
 - 修改数组形状(reshape)
 
-- 翻转数组(revel)
-
-- 修改数组维度()
-
-- 连接数组
-
-- 分割数组
-
-- 数组元素的添加和删除
-
   `ndarray.reshape`可以重定义数组行列
 
-  `ndarray.flat`是一个数组元素迭代器，扁平化成类list进行迭代
+  `ndarray.flat`是一个数组元素迭代器，可用for in 访问迭代器内的值
 
   `ndarray.flatten`返回一份数组拷贝，对拷贝进行修改并不会改变原始数组
 
@@ -1013,12 +1034,699 @@ for x,y in np.nditer([a,b],order = 'C'):
 
   > order：'C' -- 按行，'F' -- 按列，'A' -- 原顺序，'K' -- 元素在内存中的出现顺序
 
-  `numpy.transpose(ndarray, axes)`翻转数组
+- 翻转数组(transpose)
+  `numpy.transpose(ndarray, axes)`翻转数组（相当于ndarray.T）
+
+  axes：维度
+
+  `numpy.rollaxis(ndarray,axis,start)`函数向后滚动一个特定的轴到特定的位置
+
+  axis：要向后滚动的轴
+
+  start = 0：默认为0表示完整的滚动
+
+
+```python
+import numpy as np
+
+a = np.arange(27).reshape([3,3,3])
+print(a)
+
+print(np.rollaxis(a,2))
+
+print(np.rollaxis(a,2,1))
+print(np.rollaxis(a,1,0))
+#
+[[[ 0  1  2]
+  [ 3  4  5]
+  [ 6  7  8]]
+
+ [[ 9 10 11]
+  [12 13 14]
+  [15 16 17]]
+
+ [[18 19 20]
+  [21 22 23]
+  [24 25 26]]]
+yzx
+[[[ 0  3  6]
+  [ 9 12 15]
+  [18 21 24]]
+
+ [[ 1  4  7]
+  [10 13 16]
+  [19 22 25]]
+
+ [[ 2  5  8]
+  [11 14 17]
+  [20 23 26]]]
+xzy
+[[[ 0  3  6]
+  [ 1  4  7]
+  [ 2  5  8]]
+
+ [[ 9 12 15]
+  [10 13 16]
+  [11 14 17]]
+
+ [[18 21 24]
+  [19 22 25]
+  [20 23 26]]]
+yxz
+[[[ 0  1  2]
+  [ 9 10 11]
+  [18 19 20]]
+
+ [[ 3  4  5]
+  [12 13 14]
+  [21 22 23]]
+
+ [[ 6  7  8]
+  [15 16 17]
+  [24 25 26]]]
+```
+
+​	`numpy.swapaxes(ndarray,axis1,axis2)`交换数组的两个轴
+
+```python
+import numpy as np
+
+a = np.arange(27).reshape([3,3,3])
+print(a)
+print(np.swapaxes(a,2,1))
+print(np.swapaxes(a,1,0))
+print(np.swapaxes(a,2,0))
+#
+[[[ 0  1  2]
+  [ 3  4  5]
+  [ 6  7  8]]
+
+ [[ 9 10 11]
+  [12 13 14]
+  [15 16 17]]
+
+ [[18 19 20]
+  [21 22 23]
+  [24 25 26]]]
+xzy
+[[[ 0  3  6]
+  [ 1  4  7]
+  [ 2  5  8]]
+
+ [[ 9 12 15]
+  [10 13 16]
+  [11 14 17]]
+
+ [[18 21 24]
+  [19 22 25]
+  [20 23 26]]]
+yxz
+[[[ 0  1  2]
+  [ 9 10 11]
+  [18 19 20]]
+
+ [[ 3  4  5]
+  [12 13 14]
+  [21 22 23]]
+
+ [[ 6  7  8]
+  [15 16 17]
+  [24 25 26]]]
+ zyx
+[[[ 0  9 18]
+  [ 3 12 21]
+  [ 6 15 24]]
+
+ [[ 1 10 19]
+  [ 4 13 22]
+  [ 7 16 25]]
+
+ [[ 2 11 20]
+  [ 5 14 23]
+  [ 8 17 26]]]
+```
+
+- 修改数组维度(broadcast,broadcast_to,expand_dims,squeeze)
+
+  | 函数           | 描述                       |
+  | -------------- | -------------------------- |
+  | `broadcast`    | 产生模仿广播的对象         |
+  | `broadcast_to` | 将数组广播到新形状         |
+  | `expand_dims`  | 扩展数组的形状             |
+  | `squeeze`      | 从数组的形状中删除一维条目 |
+
+  `numpy.broadcast `用于模仿广播对象，它返回一个对象（numpy.broadcast object），该对象封装了将一个数组广播到另一个数组的结果。
+
+  
+
+  `numpy.broadcast_to(array, shape, subok)` 函数将数组广播到新形状。它在原始数组上返回只读视图。 它通常不连续。 如果新形状不符合 NumPy 的广播规则，该函数可能会抛出ValueError。
+
+  
+
+  ``numpy.expand_dims(arr, axis)`` 函数通过在指定位置插入新的轴来扩展数组形状。
+
+  `numpy.squeeze(arr,axis = 0)`函数从给定数组的形状中删除一维的条目
+
+  
+
+- 连接数组
+
+  | 函数          | 描述                           |
+  | ------------- | ------------------------------ |
+  | `concatenate` | 连接沿现有轴的数组序列         |
+  | `stack`       | 沿着新的轴加入一系列数组。     |
+  | `hstack`      | 水平堆叠序列中的数组（列方向） |
+  | `vstack`      | 竖直堆叠序列中的数组（行方向） |
+
+`numpy.concatenate((a1, a2, ...), axis = 0)`
+
+```python
+import numpy as np
+ 
+a = np.array([[1,2],[3,4]])
+ 
+print ('第一个数组：')
+print (a)
+print ('\n')
+b = np.array([[5,6],[7,8]])
+ 
+print ('第二个数组：')
+print (b)
+print ('\n')
+# 两个数组的维度相同
+ 
+print ('沿轴 0 连接两个数组：')
+print (np.concatenate((a,b)))
+print ('\n')
+ 
+print ('沿轴 1 连接两个数组：')
+print (np.concatenate((a,b),axis = 1))
+#
+第一个数组：
+[[1 2]
+ [3 4]]
+第二个数组：
+[[5 6]
+ [7 8]]
+沿轴 0 连接两个数组：
+[[1 2]
+ [3 4]
+ [5 6]
+ [7 8]]
+沿轴 1 连接两个数组：
+[[1 2 5 6]
+ [3 4 7 8]]
+[Finished in 0.3s]
+```
+
+`numpy.stack(arrays, axis)`沿新的轴连接数组，新建一个维度
+
+`numpy.hstack(ndarray1,ndarray2)`水平堆叠生成数组
+
+`numpy.vstack(ndarray1,ndarray2)`垂直堆叠生成数组
+
+- 分割数组
+
+| 函数     | 数组及操作                             |
+| -------- | -------------------------------------- |
+| `split`  | 将一个数组分割为多个子数组             |
+| `hsplit` | 将一个数组水平分割为多个子数组（按列） |
+| `vsplit` | 将一个数组垂直分割为多个子数组（按行） |
+
+`numpy.split(ary, indices_or_sections, axis)`沿特定轴将数组分割为子数组
+>`ary`：被分割的数组
+>`indices_or_sections`：果是一个整数，就用该数平均切分，如果是一个数组，为沿轴切分的位置（左开右闭）
+>`axis`：沿着哪个维度进行切向，默认为0，横向切分。为1时，纵向切分
+
+```python
+import numpy as np
+ 
+a = np.arange(9)
+ 
+print ('第一个数组：')
+print (a)
+print ('\n')
+ 
+print ('将数组分为三个大小相等的子数组：')
+b = np.split(a,3)
+print (b)
+print ('\n')
+#[array([0,1,2]),array([3,4,5]),array([6,7,8])]
+ 
+print ('将数组在一维数组中表明的位置分割：')
+b = np.split(a,[4,7])
+print (b)
+#[array([0,1,2,3],array([4,5,6]),array([7,8])]
+```
+
+`numpy.hsplit `函数用于水平分割数组，通过指定要返回的相同形状的数组数量来拆分原数组，用法和split类似。
+
+`numpy.vsplit` 沿着垂直轴分割，其分割方式与split用法相同
+
+- 数组元素的添加和删除
+
+| 函数     | 元素及描述                               |
+| -------- | ---------------------------------------- |
+| `resize` | 返回指定形状的新数组                     |
+| `append` | 将值添加到数组末尾                       |
+| `insert` | 沿指定轴将值插入到指定下标之前           |
+| `delete` | 删掉某个轴的子数组，并返回删除后的新数组 |
+| `unique` | 查找数组内的唯一元素                     |
+
+`numpy.resize(arr, shape)` np.resize(arr,shape)等价于arr.resize(shape)
+
+`numpy.append(arr, values, axis=None)`函数在数组的末尾添加值。 追加操作会分配整个数组，并把原来的数组复制到新数组中。 此外，输入数组的维度必须匹配否则将生成ValueError。
+
+```python
+import numpy as np
+ 
+a = np.array([[1,2,3],[4,5,6]])
+print (a)
+#
+[[1 2 3]
+ [4 5 6]]
+ print ('向数组添加元素：')
+print (np.append(a, [7,8,9]))
+#未传递axis数组会展开
+[1 2 3 4 5 6 7 8 9]
+ 
+print ('沿轴 0 添加元素：')
+print (np.append(a, [[7,8,9]],axis = 0))
+#
+[[1 2 3]
+ [4 5 6]
+ [7 8 9]] 
+print ('沿轴 1 添加元素：')
+print (np.append(a, [[5,5,5],[7,8,9]],axis = 1))
+#
+[[1 2 3 5 5 5]
+ [4 5 6 7 8 9]]
+```
+
+`numpy.insert(arr, obj, values, axis)`函数在给定索引之前，沿给定轴在输入数组中插入值。
+
+```python
+import numpy as np
+ 
+a = np.array([[1,2],[3,4],[5,6]])
+print (a)
+#
+[[1 2]
+ [3 4]
+ [5 6]]
+print ('未传递 Axis 参数。 在插入之前输入数组会被展开。')
+print (np.insert(a,3,[11,12]))
+#
+[1 2 3 11 12 4 5 6]
+print ('传递了 Axis 参数。 会广播值数组来配输入数组。')
+print ('沿轴 0 广播：')
+print (np.insert(a,1,[11],axis = 0))
+#自动广播
+[[1 2]
+ [11 11]
+ [3 4]
+ [5 6]]
+print ('沿轴 1 广播：')
+print (np.insert(a,1,11,axis = 1))
+[[1 11 2]
+ [3 11 4]
+ [5 11 6]]
+```
+
+`Numpy.delete(arr, obj, axis)`函数返回从输入数组中删除指定子数组的新数组。 与 insert() 函数的情况一样，如果未提供轴参数，则输入数组将展开。
+>  `arr`：输入数组
+>   `obj`：可以被切片，整数或者整数数组，表明要从输入数组删除的子数组
+>   `axis`：沿着它删除给定子数组的轴，如果未提供，则输入数组会被展开
+
+```python
+a = np.array([1,2,3,4,5,6,7,8,9,10])
+print (np.delete(a, np.s_[::2]))
+#np.s_[：：]切片
+```
+
+`numpy.unique(arr, return_index, return_inverse, return_counts)`函数用于去除数组中的重复元素。
+
+>arr：输入数组，如果不是一维数组则会展开
+>return_index：如果为true，返回新列表元素在旧列表中的位置（下标），并以列表形式储
+>return_inverse：如果为true，返回旧列表元素在新列表中的位置（下标），并以列表形式储
+>return_counts：如果为true，返回去重数组中的元素在原数组中的出现次数
+
+### 位运算(bitwise按位)
+
+`numpy.bitwise_and(a,b)`与运算
+
+`numpy.bitwise_or(a,b)`或运算
+
+`numpy.invert()`非
+
+`left_shift(a,width = 8)`按位左移
+
+`right_shift(a,width = 8)`按位右移
+
+### 字节转换函数
+
+`ndarray.byteswap(True/False)`对ndarray中的元素进行大小端字节转换
+
+### 字符串函数
+
+| 函数           | 描述                                       |
+| -------------- | ------------------------------------------ |
+| `numpy.char.add(['s1'],['s2'])` | 对两个数组的逐个字符串元素进行连接         |
+| `numpy.char.multiply(['s'],mult)` | 返回按元素多重连接后的字符串               |
+| `numpy.char.center('str',width = Num,fillchar = '*')` | 居中字符串                                 |
+| `numpy.char.capitalize('str')` | 将字符串第一个字母转换为大写               |
+| `numpy.char.title('str')` | 将字符串的每个单词的第一个字母转换为大写   |
+| `numpy.char.lower('str')` | 数组元素转换为小写                         |
+| `numpy.char.upper('str')` | 数组元素转换为大写                         |
+| `numpy.char.split('str',sep = '*')` | 指定分隔符对字符串进行分割，并返回数组列表 |
+| `numpy.char.splitlines('str')` | 返回元素中的行列表，以换行符分割           |
+| `numpy.char.strip('str','char')` | 移除元素开头或者结尾处的特定字符           |
+| `numpy.char.join(['char1','char2'],['str1',str2])` | 通过指定分隔符来连接数组中的元素           |
+| `numpy.char.replace('str','s1',s2)` | 使用新字符串s2替换字符串中的所有子字符串s1 |
+| `numpy.char.decode()`     | 数组元素依次调用`str.decode`               |
+| `numpy.char.encode()`     | 数组元素依次调用`str.encode`               |
+
+### 数学函数
+
+ **三角函数**
+
+​	NumPy 提供了标准的三角函数：numpy.sin()、numpy.cos()、numpy.tan()
+
+```python
+import numpy as np
+ 
+a = np.array([0,30,45,60,90])
+print ('不同角度的正弦值：')
+# 通过乘 pi/180 转化为弧度  
+print (np.sin(a*np.pi/180))
+print ('\n')
+print ('数组中角度的余弦值：')
+print (np.cos(a*np.pi/180))
+print ('\n')
+print ('数组中角度的正切值：')
+print (np.tan(a*np.pi/180))
+```
+
+numpy.arcsin，numpy.arccos，和 numpy.arctan 函数返回给定角度的 sin，cos 和 tan 的反三角函数
+
+**舍入函数**
+
+​	numpy.around(a,decimals)四舍五入
+
+	>a: 数组
+	>
+	>decimals: 舍入的小数位数。 默认值为0。 如果为负，整数将四舍五入到小数点左侧的位置（即 numpy.around(192.586,decimals = -1） 190)
+
+​	numpy.floor()向下舍入
+
+​	numpy.ceil()向上舍入
+
+### 运算函数
+
+NumPy 算术函数包含简单的加减乘除: `numpy.add()，numpy.subtract()，numpy.multiply() 和 numpy.divide()`
+
+`numpy.reciprocal() `函数返回参数逐元素的倒数
+
+```python
+import numpy as np 
+ 
+a = np.array([0.25,  1.33,  1,  100])  
+print ('调用 reciprocal 函数：')
+print (np.reciprocal(a))
+#
+调用 reciprocal 函数：
+[4.        0.7518797 1.        0.01     ]
+```
+
+`numpy.power() `函数将第一个输入数组中的元素作为底数，计算它与第二个输入数组中相应元素的幂。
+
+`numpy.mod()` 计算输入数组中相应元素的相除后的余数。 函数 numpy.remainder() 也产生相同的结果。
+
+### 统计函数
+
+`numpy.amin(arr,axis = None)`用于计算数组中的元素沿指定轴的最小值。axis 默认为None，即将arr展开。
+
+`numpy.amax(arr,axis = None) `用于计算数组中的元素沿指定轴的最大值。用法与numpy.amin相似。
+
+numpy.ptp(arr,axis = None)函数计算数组中元素最大值与最小值的差（最大值 - 最小值）。
+
+`numpy.percentile(a,q,axis = None，keepdims = False)`百分位数是统计中使用的度量，表示小于这个值的观察值的百分比。 函数numpy.percentile()接受以下参数。
+
+> a：数组
+>
+> q：要计算的百分位数[0-100]
+>
+> axis：维度
+>
+> keepdims：保持原数组的dims
+
+`numpy.median(arr, axis = None)` 函数用于计算数组 a 中元素的中位数（中值）
+
+`numpy.mean(arr, axis = None) `函数返回数组中元素的算术平均值。 (算术平均值是沿轴的元素的总和除以元素的数量。)
+
+`numpy.average(arr, axis = None,weights = wts)` 函数根据在另一个数组中给出的各自的权重计算数组中元素的加权平均值。不指定权重默认为1，此时和mean结果相同
+
+```python
+import numpy as np 
+ 
+a = np.array([1,2,3,4])  
+print ('我们的数组是：')
+print (a)
+print ('\n')
+print ('调用 average() 函数：')
+print (np.average(a))
+print ('\n')
+# 不指定权重时相当于 mean 函数
+wts = np.array([4,3,2,1])  
+print ('再次调用 average() 函数：')
+print (np.average(a,weights = wts))
+print ('\n')
+# 如果 returned 参数设为 true，则返回权重的和  
+print ('权重的和：')
+print (np.average([1,2,3,  4],weights =  [4,3,2,1], returned =  True))
+```
+
+`numpy.std(arr,axis = None)`标准差，等价于 `sqrt(numpy.mean(arr-numpy.mean(arr,axis = None)**2))`
+
+`numpy.var(arr,axis = None)`方差，等价于`numpy.mean(arr-numpy.mean(arr,axis = None)**2)`
+
+### NumPy排序
+
+`numpy.sort(ndarray,axis,kind,order) `
+
+axis 默认为None这时数组会展开；kind 可以选quicksort(defult),mergesort,heapsort
+
+order如果数组包含字段则是要排序的字段
+
+```python
+import numpy as np
+
+dtp = [('name','S10'),('age',np.int8)]
+a = np.array([("bob",12),('alis',13),('john',11)],dtype = dtp)
+print(a)
+print('sort by name:',np.sort(a,order = 'name'))
+print('sort by age:',np.sort(a,kind = 'quicksort',order = 'age'))
+#
+[(b'bob', 12) (b'alis', 13) (b'john', 11)]
+sort by name: [(b'alis', 13) (b'bob', 12) (b'john', 11)]
+sort by age: [(b'john', 11) (b'bob', 12) (b'alis', 13)]
+```
+
+`numpy.argsort(ndarray,axis = -1,kind = 'quicksort',order = None)`函数返回排序后的索引值。
+
+`numpy.lexsort(tuple)` 按照多个序列排序。返回排序后的索引值，可使用 for 遍历。
+
+`numpy.msort(ndarray)` = `numpy.sort(a,axis = 0)`按照第一个轴排序
+
+`sort_complex(ndarray)` 对复数数列按照先实部后虚部进行排序。
+
+`partition(ndarray, kth[, axis, kind, order])` 指定一个数对数组进行分区(即快速排序的步骤)
+
+kth接收tuple表示的区间，np.partition(arr,(1,3))即小于1的放最前面，[1,3)放中间，大于3的放最后。
+
+`argpartition(ndarray,kth[, axis, kind, order])` 返回partition结果中元素的索引
+
+`numpy.argmax()`返回给定轴最大元素的索引
+
+`numpy.argmin()`返回给定轴最小元素的索引
+
+`numpy.nonzero()`返回数组中非零元素的索引
+
+`numpy.where()`返回满足条件的元素的索引（参照布尔切片）
+
+`numpy.extract()`根据条件返回满足条件的元素
+
+```python
+import numpy as np
+x = np.arange(9).reshape(3,3)
+condition = np.mod(x,2) == 0#返回一个bool_numpy.ndarray
+print(condition)
+print(np.extract(condition,x))#print(x[x%2==0])
+#
+[[ True False  True]
+ [False  True False]
+ [ True False  True]]
+[0 2 4 6 8]
+```
 
 
 
-​	`numpy.rollaxis(ndarray,axis,start)`函数向后滚动一个特定的轴到特定的位置
+### 矩阵库
+
+NumPy 中包含一个矩阵库 numpy.matlib,操作对象和返回对象都是矩阵，而不是ndarray。
+
+`numpy.matlib.empty(shape, dtype = np.float, order)`返回一个新的矩阵
+
+`numpy.matlib.zeros(shape, dtype = np.float, order)`返回一个初始值为0的新矩阵
+
+`numpy.matlib.ones(shape, dtype = np.float, order)`返回一个初始值为1的新矩阵
+
+`numpy.matlib.eye(n, M = n, k, dtype = np.float)`返回一个主对角线为1的对角矩阵。(k为对角线偏置，为0则为主对角线，小于0向下偏，大于0向上偏)
+
+`numpy.matlib.identity()`返回给定大小的单位阵。
+
+>`np.matlib.identity(5, dtype = np.float)`等价于`numpy.matlib.eye(5,k=0,dtype = np.float)`
+
+`numpy.matlib.rand(n,M,dtype = np.float)`返回一个n维矩阵，数值随机（值小于1大于0）
+
+matlib总是一个二维数组，其本质是ndarray。二者之间可以直接赋值或深拷贝。
 
 
 
-​	
+### 线性代数
+
+NumPy内置了线性代数库linalg。
+
+| 函数          | 描述                             |
+| ------------- | -------------------------------- |
+| `dot`         | 两个数组的点积，即元素对应相乘。 |
+| `vdot`        | 两个向量的点积，高维数组自动降维 |
+| `inner`       | 两个数组的内积                   |
+| `matmul`      | 两个数组的矩阵积                 |
+| `determinant` | 数组的行列式                     |
+| `solve`       | 求解线性矩阵方程                 |
+| `inv`         | 计算矩阵的乘法逆矩阵             |
+
+`numpy.dot(a, b, out = None)`两个向量的矢量积
+
+>a : ndarray 数组
+>
+>b : ndarray 数组
+>
+>out : ndarray, 可选，用来保存dot()的计算结果
+>
+>```python
+>import numpy as np
+>import numpy.linalg
+>import numpy.matlib
+>a = np.arange(1,7).reshape(3,2,order = 'F')
+>b = np.arange(1,7).reshape(2,3,order = 'C')
+>print(a,b,sep = '\n')
+>n = np.dot(a,b)
+>print(n)
+>m = np.dot(b,a)
+>print(m)
+>#
+>[[1 4]
+> [2 5]
+> [3 6]]
+>[[1 2 3]
+> [4 5 6]]
+>[[17 22 27]
+> [22 29 36]
+> [27 36 45]]
+>[[14 32]
+> [32 77]]
+>```
+
+`numpy.vdot(a, b)`两个向量的数量积在计算高维数量积时，先把高维降到一维，然后进行数量积运算。
+
+`numpy.inner(ndarray)`一维ndarray内积运算，高维数组为对应维度上的内积运算。
+
+对于多维数组相当：
+
+```python
+import numpy as np 
+a = np.arange(1,5).reshape(2,2)
+b = np.arange(5,9).reshape(2,2)
+print (a,b,np.inner(a,b),sep = '\n')
+print(np.dot(a,b))
+#
+[[1 2]
+ [3 4]]
+[[5 6]
+ [7 8]]
+inner()
+[[17 23]
+ [39 53]]
+dot()
+[[19 22]
+ [43 50]]
+inner运算类似于
+[a11*b11+a12*b12,a11*b21+a12*b22]
+[a21*b11+a22*b12,a21*b21+a22*b22]
+```
+
+`numpy.matmul(a, b, out = None)`返回矩阵乘积，高于二维视为存在最后两个索引的矩阵的栈，若有一个为一维，则横向广播，然后再进行乘积，最后反横向广播。
+
+```python
+import numpy as np 
+a = np.array([[1,2],[3,4]])
+b = np.array([[2,2],[3,3]])
+c = np.array([2,3])
+print(np.matmul(a,c))
+print(np.matmul(a,b))
+#
+[ 8 18]
+[[ 8  8]
+ [18 18]]
+```
+
+`numpy.linalg.det(ndarray)`计算输入矩阵的行列式的值。
+
+`numpy.linalg.solve(ndarray1,ndarray2)`计算增广矩阵的解。
+
+```python
+import numpy as np 
+import numpy.linalg
+
+a = np.array([2,2,-1,1,-2,4,5,8,-1]).reshape(3,3)
+b = np.array([6,3,27])
+print(np.linalg.solve(a,b))
+#
+[1. 3. 2.]
+```
+
+
+
+`numpy.linalg.inv(ndarray)`计算可逆矩阵的逆矩阵。
+
+```python
+import numpy as np 
+import numpy.linalg
+
+print(np.linalg.inv(np.array([1,2,-1,-3]).reshape(2,2)))
+#
+[[ 3.  2.]
+ [-1. -1.]]
+```
+
+### 副本和视图
+
+副本即拷贝，在内存中重新划出一块区域把源数据拷贝一份，修改副本内的内容源数据不会同时修改。
+
+视图本身上还是源数据，只是改变了形状(shape)，修改视图会导致源数据发生变化。reshape,ravel,切片返回的都是视图，
+
+**视图一般发生在：**
+
+- 1、numpy 的切片操作返回原数据的视图。
+- 2、调用 ndarray 的 view() 函数产生一个视图。
+
+**副本一般发生在：**
+
+- Python 序列的切片操作，调用deepCopy()函数。
+- 调用 ndarray 的 copy() 函数产生一个副本。
+
+注意：对于numpy.ndarray对象来说，简单的赋值（a = b）不会引起产生副本。
+
+修改视图的形状不会改变原数组的形状
