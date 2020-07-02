@@ -1,4 +1,4 @@
----
+```php
 title: Python进阶笔记
 date: 2019-03-06 21:23:56
 tags:
@@ -6,7 +6,32 @@ tags:
     - advancement
     - noteBook
 toc: true
----
+form: https://github.com/LiuQixuan/PythonLearningNote
+info: Copyright©2019 AIUSoft.All Rights Reserved. 
+```
+- [函数式编程](#函数式编程)
+- [面向对象](#面向对象)
+  - [变量](#变量)
+  - [方法(存储在内存中)](#方法存储在内存中)
+  - [属性（@property def func(self)）](#属性property-def-funcself)
+  - [创建类的两种方法](#创建类的两种方法)
+  - [使用枚举类(枚举类不可比较大小，但是同一枚举类的成员可以做等值is / not is判断)](#使用枚举类枚举类不可比较大小但是同一枚举类的成员可以做等值is--not-is判断)
+  - [定义枚举类](#定义枚举类)
+- [高级面向对象](#高级面向对象)
+  - [元类types](#元类types)
+  - [元类type构造对象](#元类type构造对象)
+  - [使用Slot限制添加属性](#使用slot限制添加属性)
+  - [装饰器](#装饰器)
+  - [python垃圾回收机制](#python垃圾回收机制)
+- [python 异常（Exception）、调试（Debug）、回溯（Traceback)](#python-异常exception调试debug回溯traceback)
+  - [异常（Exception）](#异常exception)
+  - [调试（Debug）](#调试debug)
+  - [回溯（Traceback)](#回溯traceback)
+- [with 用法](#with-用法)
+- [f_string 处理](#f_string-处理)
+- [数组复制的5种方法](#数组复制的5种方法)
+
+
 Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3 失去了Python的灵魂，就没管Python3 。 最近因为项目需要使用Python3，又把当年的那份热血花在了Python3的学习上。 本以为Python3只是Python2 的升级会很好上手，没想到Python3相对于Python2而言有太多的新语法、新概念。 从小养成学习记笔记的好习惯，把学习遇到的重点写下来，第一日后复习用，其次如果有其他同学看到我的笔记，并感觉有用，也是算是我劳动成果的附加收益吧
 
 ## 函数式编程
@@ -21,43 +46,47 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 - 偏函数（`functools.partor(function[,args,**kwords]`)
 
 <!--more-->
+
 ## 面向对象
 ### 变量
 >1.静态字段
 >2.普通字段(self.value)
 
-###方法(存储在内存中)
+### 方法(存储在内存中)
+
 >1.普通方法def func(self[,args])
 >2.类方法(@classmethod def func(cls[,args]))
 >3.静态方法(@staticmethod def func())
 
-###属性（@property def func(self)）
+### 属性（@property def func(self)）
 
 >1.静态字段
 >2.装饰类
 >
 >>经典装饰器
->>新装饰器
+>>新装饰器(使用方法模拟成员变量以及对成员变量的操作)
 >>
->>>方法一
->>>继承object
->>>
->>>```python
->>>@property object.func
->>>@func.setter object.func = value
->>>@func.deleter del object.func
->>>```
->>>方法二
->>>创建property对象的静态字段
->>>```python
->>>pro = property(get_value(),set_value(),del_value(),__doc__)
->>>obj = Object()
->>>ov = obj.pro
->>>obj.pro = value
->>>del obj.pro
->>>obj.pro.__doc__
->>>```
->>>类的特殊成员
+>>方法一
+>>继承object
+>>
+>>```python
+>>@property 			object.funcName //user funcName to get the function return value like member value
+>>@funcName.setter 	object.func = value
+>>@funcName.deleter 	del object.funcName
+>>```
+>>方法二
+>>创建property对象的静态字段
+>>
+>>```python
+>>pro = property(get_value(),set_value(),del_value(),__doc__)
+>>obj = Object()
+>>ov = obj.pro
+>>obj.pro = value
+>>del obj.pro
+>>obj.pro.__doc__
+>>```
+
+>类的特殊成员
 >
 >- `__doc__` 表示类的描述信息
 >
@@ -79,18 +108,21 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >
 >- `__getattr__()`当访问obj不存在的属性时会调用该方法  
 >
->    getattr(obj, name, value)  ==> obj.name 不存在该属性返回value
+>   getattr(obj, name, value)  ==> obj.name 不存在该属性返回value
 >
->    name是函数name()需要添加@property 描述符
+>   name是函数name()需要添加@property 描述符
 >
 >- `__dict__` 类或对象中的所有成员
 >
 >- `__str__` 将类格式化成字符串 print(obj) 时调用,即toString()方法
 >
 >- `__repr__` 将类格式化成字符串 print(obj) 时调用,和 `__str__` 的区别：更适合从编程语言上理解 
->  print(obj) 
->  [output:] class_name.method(self, arg1, arg2, ...)
->
+>> ```python
+>>print(obj) 
+>>
+>>[output:] class_name.method(self, arg1, arg2, ...)
+>> ```
+> 
 >- `__getitem__` 用于索引操作[num]，获取数据
 >
 >- `__setitem__` 用于索引操作[num]，设置数据
@@ -98,74 +130,76 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >- `__delitem__` 用于索引操作[num]，删除数据
 >>```python
 >> class mydict(object):
->> def __getitem__(self, key):
->>  return self.key
->> def __setitem__(self, key, value):
->>  self.key = value
->> def __delitem__(self, key):
->>  del self.key
->>  obj = mydict()
->>  result = obj[]
+>> 	def __getitem__(self, key):
+>>  		return self.key
+>> 	def __setitem__(self, key, value):
+>>  		self.key = value
+>> 	def __delitem__(self, key):
+>>  		del self.key
+>>  		obj = mydict()
+>>  result = obj[key]
 >>  obj['key'] = value
 >>  del obj['key']
 >>```
->> **实现切片操作**
->>`__getitem__(self, n)`传入的参数n 可能是int也可能是slice
->>
->> ```python
->> class Fib(object):
->> def __getiter__(self, n):
->>  if isinstance(n, int):
->>        a, b = 1, 1
->>        for x in range(n):
->>            a, b = b, a + b
->>      return a
->>    if isinstanece(n, slice):
->>        l = []
->>        slice.start = 0 if (slice.start is None)
->>        a, b = 1, 1
->>        for x in range(n.stop):
->>          if (x >= n.start and (x - n.start)%n.step == 0):
->>              l.append(a)
->>            a, b = b, a+b
->>        return l
->>        
->>
->> ```
->- `__getslice__` (self, i, j) obj[-1:1]
+
+> **实现切片操作**
 >
->- `__setslice__` (self, i, j, sequence) obj[0:1] = [11,22,33,44]
+> >`__getitem__(self, n)`传入的参数n 可能是int也可能是slice
+> >
+> > ```python
+> > class Fib(object):
+> > def __getiter__(self, n):
+> >  if isinstance(n, int):
+> >        a, b = 1, 1
+> >        for x in range(n):
+> >            a, b = b, a + b
+> >      return a
+> >    if isinstanece(n, slice):
+> >        l = []
+> >        slice.start = 0 if (slice.start is None)
+> >        a, b = 1, 1
+> >        for x in range(n.stop):
+> >          if (x >= n.start and (x - n.start)%n.step == 0):
+> >              l.append(a)
+> >            a, b = b, a+b
+> >        return l
+> >        
+> >
+> > ```
+> - `__getslice__` (self, i, j) obj[-1:1]
 >
->- `__delslice__` (self, i, j) del obj[0:2]
+> - `__setslice__` (self, i, j, sequence) obj[0:1] = [11,22,33,44]
 >
->- `__iter__` 迭代器
+> - `__delslice__` (self, i, j) del obj[0:2]
 >
->- `__next__` 配合`__iter__`实现类的interable属性
+> - `__iter__` 迭代器
 >
->- `__new__`方法`__new__(cls, name, bases, attrs)` 类准备将自身实例化时调用，在`__init__()`调用之前调用`__new__（）`，该方法是一个类方法@classmethod
+> - `__next__` 配合`__iter__`实现类的interable属性
 >
->    cls：当前准备创建的类的对象:type
+> - `__new__`方法`__new__(cls, name, bases, attrs)` 类准备将自身实例化时调用，在`__init__()`调用之前调用`__new__（）`，该方法是一个类方法@classmethod
 >
->    name：类的名字:str
+>   cls：当前准备创建的类的对象:type
 >
->    bases：类继承的父类集合:class
+>   name：类的名字:str
 >
->    attrs：类的方法集合:dict
+>   bases：类继承的父类集合:class
 >
->- `__metaclass__` 该属性定义一个类的元类，即表示类该有哪个类（元类）来实例化
+>   attrs：类的方法集合:dict
+>
+> - `__metaclass__` 该属性定义一个类的元类，即表示类该有哪个类（元类）来实例化
 ### 创建类的两种方法
 >1.普通方法
 >```python
 >class Object(object):
->def func(self):
->   print('hello world!')
+>	def func(self):
+>   	print('hello world!')
 >object = Object()
 >```
 >2.特殊方法（元类type构造对象）
 >
 >```python
 >def func(self):
->   print('Hello world!')
+>   	print('Hello world!')
 >   object = type('Object', (object,), {'func':func})
 >#arg1:str 类名 ;arg2:tuple 基类; arg3:dict 成员;
 >```
@@ -251,10 +285,10 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >动态的给类添加方法
 >```python
 >def func(self, value):
->   self.age = value
+>   	self.age = value
 >class Student(object):
->   def __init__(self,name):
->       self.name = name
+>   	def __init__(self,name):
+>       	self.name = name
 >Student.age_setter = func
 >Student.age_setter = MethodType(func, None, Student)
 >student = Student('Bob')
@@ -264,7 +298,7 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 ### 元类type构造对象
 >```python
 >def func(self):
->   print('Hello world!')
+>   	print('Hello world!')
 >object = type('Object', (object,), {'func':func})
 >#arg1:str 类名 ;arg2:tuple 基类; arg3:dict('a' = a, 'b' = b...) 类变量/静态字段;
 >```
@@ -298,14 +332,13 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 
 ### 装饰器
 >一般装饰器（@decorate）
+
 >描述符装饰器
 >
->>实现了
->>```__get__() __set__() __del__()```
->>```@property @func.setter @func.deleter```
+>>实现了```__get__() __set__() __del__()@property @func.setter @func.deleter```
 >>
->>>数据描述符（实现了get set）
->>>非数据描述符（只实现get 没有实现set)
+>>数据描述符（实现了get set）
+>>非数据描述符（只实现get 没有实现set)
 
 ### python垃圾回收机制
 >- 引用计数器（当一个对象被引用机会增加其引用计数，当不被引用时减少引用计数，减少至0时在合适的时机下内存被回收）
@@ -475,13 +508,13 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >【version 2.0】
 >file = open("/src/tmp.txt")
 >try:
->data = file.read()
+>   data = file.read()
 >finally:
->file.close()
+>   file.close()
 >#总体结构安全性都有提升
 >【version 3.0 with】
 >with open("/src/tmp.txt") as file:
->data = file.read()
+>   data = file.read()
 >```
 >
 >with 对处理对象需要自定义`__enter__() __exit__()`方法
@@ -531,7 +564,8 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >
 >- `open`(*file*, *mode='r'*, *buffering=-1*, *encoding=None*, *errors=None*, *newline=None*, *closefd=True*, *opener=None*)
 >
-## f_string 处理`__str__，__repr__`
+## f_string 处理
+`__str__，__repr__`
 >
 >- `__str __（）`和`__repr __（）`方法处理对象如何呈现为字符串，因此您需要确保在类定义中包含至少一个这些方法。如果必须选择一个，请使用`__repr __（）`，因为它可以代替`__str __（）`。
 >- `__str __（）`返回的字符串是对象的非正式字符串表示，应该可读。`__repr __（）`返回的字符串是官方表示，应该是明确的。调用`str（）`和`repr（）`比直接使用`__str __（）`和`__repr __（）`更好。
@@ -544,3 +578,30 @@ Python 进阶学习笔记 当年学了点Python2 ，那时候听说什么Python3
 >'This __repr__'
 >```
 >
+
+## 数组复制的5种方法
+
+python中简单将一个数组赋值给另一个数组,实际上是两个引用指向同一块内存,可能无法达到预期目的.因此这里整理了几种数组拷贝复制的方法.
+
+>1. 切片
+>``` python
+>newArr = oldArr[:]
+>```
+>
+>2. list()
+>``` python
+>newArr = list(oldArr)
+>```
+>3. Arr*1
+>```python
+>newArr = oldArr*1
+>```
+>4. copy.copy()浅拷贝方法
+>```python
+>newArr = copy.copy(oldArr)
+>newArr = oldArr.copy()
+>```
+>5. copy.deepcopy()深拷贝方法
+>```python
+>newArr = copy.deepcopy(oldArr)
+>```
