@@ -54,7 +54,6 @@ plt.show()
 
 1. 找到matplotlib 配置文件：
    
-
 ```python
 import matplotlib 
 print(matplotlib.matplotlib_fname()) 
