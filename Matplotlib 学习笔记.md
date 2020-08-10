@@ -511,6 +511,5 @@ plt.show()
 这些 Locators 都是 matplotlib.ticker.Locator 的子类，你可以据此定义自己的 Locator。以日期为 ticks 特别复杂，因此 Matplotlib 提供了 matplotlib.dates 来实现这一功能。
 
 
-
 ### 基础教程到此结束，高级教程后续更新。
 
